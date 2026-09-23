@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>pen story</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,500;1,400&family=Space+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==================== BASE & VARIABLES ==================== */
+    :root {
+      --bg-color: #0f0f11;
+      --text-color: #e0e0e0;
+      --accent-color: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --font-title: 'Playfair Display', serif;
+      --font-body: 'Inter', sans-serif;
+      --transition: all 0.4s ease;
+    }
+
+    /* GENRE THEMES */
+    body.theme-all {
+      --bg-color: #0f0f11;
+      --text-color: #e0e0e0;
+      --accent-color: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --font-title: 'Playfair Display', serif;
+    }
+
+    body.theme-horror {
+      --bg-color: #080202;
+      --text-color: #c4b8b8;
+      --accent-color: #ff3333;
+      --card-bg: rgba(40, 0, 0, 0.3);
+      --card-border: rgba(255, 0, 0, 0.2);
+      --font-title: 'Cinzel', serif;
+    }
+
+    body.theme-romance {
+      --bg-color: #1a0f14;
+      --text-color: #ebdada;
+      --accent-color: #ffb3c6;
+      --card-bg: rgba(255, 179, 198, 0.05);
+      --card-border: rgba(255, 179, 198, 0.2);
+      --font-title: 'Playfair Display', serif;
+    }
+
+    body.theme-scifi {
+      --bg-color: #050b14;
+      --text-color: #d0e1f9;
+      --accent-color: #00f0ff;
+      --card-bg: rgba(0, 240, 255, 0.03);
+      --card-border: rgba(0, 240, 255, 0.2);
+      --font-title: 'Space Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      transition: var(--transition);
+      overflow-x: hidden;
+    }
+
+    /* ==================== WELCOME SCREEN ==================== */
+    #welcome-screen {
+      position: fixed;
+      inset: 0;
+      background-color: #08080a;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      text-align: center;
+      padding: 20px;
+      transition: opacity 0.8s ease, visibility 0.8s;
+    }
+
+    #welcome-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .welcome-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .welcome-subtitle {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 30px;
+      font-weight: 300;
+    }
+
+    .enter-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      padding: 12px 32px;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 30px;
+      transition: var(--transition);
+    }
+
+    .enter-btn:hover {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    /* ==================== MAIN CONTENT ==================== */
+    #main-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+    }
+
+    #main-content.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      padding-top: 20px;
+    }
+
+    .logo {
+      font-family: var(--font-title);
+      font-size: 2.8rem;
+      color: var(--accent-color);
+      margin-bottom: 15px;
+      transition: var(--transition);
+    }
+
+    .description {
+      max-width: 650px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+      color: var(--text-color);
+      opacity: 0.85;
+      font-weight: 300;
+    }
+
+    /* GENRE FILTER TABS */
+    .genre-filter {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-color);
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: var(--transition);
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent-color);
+      color: #000;
+      border-color: var(--accent-color);
+    }
+
+    /* STORIES GRID */
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 80px;
+    }
+
+    .story-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(5px);
+    }
+
+    .story-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-color);
+    }
+
+    .story-card-header {
+      margin-bottom: 15px;
+    }
+
+    .genre-badge {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-color);
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .story-card-title {
+      font-family: var(--font-title);
+      font-size: 1.4rem;
+      color: var(--accent-color);
+      margin-bottom: 8px;
+    }
+
+    .story-card-desc {
+      font-size: 0.9rem;
+      opacity: 0.75;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .story-card-footer {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      opacity: 0.6;
+      border-top: 1px solid var(--card-border);
+      padding-top: 12px;
+    }
+
+    /* ==================== STORY DETAIL MODAL (FILE VIEW) ==================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .story-file-modal {
+      background: var(--bg-color);
+      border: 1px solid var(--card-border);
+      width: 100%;
+      max-width: 700px;
+      max-height: 85vh;
+      border-radius: 12px;
+      padding: 35px;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: var(--text-color);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .file-details {
+      border-bottom: 1px dashed var(--card-border);
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    .file-title {
+      font-family: var(--font-title);
+      font-size: 2rem;
+      color: var(--accent-color);
+      margin-bottom: 10px;
+    }
+
+    .file-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 0.85rem;
+      opacity: 0.8;
+      margin-bottom: 15px;
+    }
+
+    .file-meta span {
+      background: var(--card-bg);
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--card-border);
+    }
+
+    .file-description {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    /* PARTS SELECTOR */
+    .parts-list h4 {
+      font-family: var(--font-title);
+      margin-bottom: 15px;
+      color: var(--accent-color);
+    }
+
+    .part-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-color);
+      border-radius: 6px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .part-btn:hover {
+      background: var(--card-border);
+      border-color: var(--accent-color);
+    }
+
+    /* READING VIEW CONTAINER */
+    .reading-content {
+      display: none;
+      margin-top: 20px;
+      border-top: 1px solid var(--card-border);
+      padding-top: 20px;
+    }
+
+    .reading-content.active {
+      display: block;
+    }
+
+    .back-to-parts {
+      background: none;
+      border: none;
+      color: var(--accent-color);
+      cursor: pointer;
+      margin-bottom: 15px;
+      font-size: 0.85rem;
+    }
+
+    /* ==================== AUTHOR SECTION ==================== */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding-top: 50px;
+      margin-top: 60px;
+      text-align: center;
+    }
+
+    .author-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .author-name {
+      font-family: var(--font-title);
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      margin-bottom: 8px;
+    }
+
+    .author-bio {
+      font-size: 0.9rem;
+      opacity: 0.75;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body class="theme-all">
+
+  <!-- 1. WELCOME SCREEN -->
+  <div id="welcome-screen">
+    <h1 class="welcome-title">pen story</h1>
+    <p class="welcome-subtitle">A collection of tales crafted word by word.</p>
+    <button class="enter-btn" onclick="enterSite()">Enter</button>
+  </div>
+
+  <!-- 2. MAIN CONTENT -->
+  <div id="main-content">
+    <header>
+      <h1 class="logo">pen story</h1>
+      <p class="description">
+        Welcome to pen story. An immersive quiet space dedicated to storytelling across worlds, timelines, and emotions. Pick a theme, select a story, and read.
+      </p>
+    </header>
+
+    <!-- GENRE FILTERS -->
+    <div class="genre-filter">
+      <button class="filter-btn active" onclick="switchGenre('all')">All Stories</button>
+      <button class="filter-btn" onclick="switchGenre('horror')">Horror</button>
+      <button class="filter-btn" onclick="switchGenre('romance')">Romance</button>
+      <button class="filter-btn" onclick="switchGenre('scifi')">Sci-Fi</button>
+    </div>
+
+    <!-- STORIES LIST -->
+    <div class="stories-grid" id="stories-container">
+      <!-- Story Cards populated dynamically by JS -->
+    </div>
+
+    <!-- 3. AUTHOR SECTION -->
+    <footer>
+      <div class="author-card">
+        <h3 class="author-name">About the Author</h3>
+        <p class="author-bio">
+          Writer and creator of <em>pen story</em>. Creating worlds, dark corners, and heart-felt moments through written words.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- 4. STORY DETAILS & READER MODAL -->
+  <div class="modal-overlay" id="story-modal">
+    <div class="story-file-modal">
+      <button class="close-modal" onclick="closeModal()">&times;</button>
+      
+      <!-- Meta Details Header -->
+      <div class="file-details">
+        <h2 class="file-title" id="modal-title">Story Title</h2>
+        <div class="file-meta">
+          <span>Genre: <strong id="modal-genre">Horror</strong></span>
+          <span>Status: <strong id="modal-status">Ongoing</strong></span>
+          <span>Parts: <strong id="modal-parts-count">3</strong></span>
+          <span>Total Reads: <strong id="modal-reads">1.2k</strong></span>
+        </div>
+        <p class="file-description" id="modal-description">Story description goes here...</p>
+      </div>
+
+      <!-- Part List Selector -->
+      <div class="parts-list" id="parts-list-view">
+        <h4>Select a Part to Read</h4>
+        <div id="parts-buttons-container"></div>
+      </div>
+
+      <!-- Reader Text Area -->
+      <div class="reading-content" id="reading-view">
+        <button class="back-to-parts" onclick="showPartsList()">&larr; Back to Parts</button>
+        <h3 id="reading-part-title" style="margin-bottom: 15px; color: var(--accent-color);">Part Title</h3>
+        <div id="reading-part-body" style="white-space: pre-line; opacity: 0.9;">Story text...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==================== SAMPLE DATA ==================== */
+    const storiesData = [
+      {
+        id: "1",
+        title: "Whispers in the Dark",
+        genre: "horror",
+        status: "Ongoing",
+        reads: "2,410",
+        description: "An abandoned manor on the edge of town hides secrets that speak only when the lights go completely out.",
+        parts: [
+          { title: "Part 1: The Old Gate", content: "The heavy iron gate creaked open under the weight of the autumn fog...\n\nSilence enveloped the grounds as I took my first step forward." },
+          { title: "Part 2: Footsteps Overhead", content: "I thought I was alone in the hall. Then came the soft, deliberate rhythm of footsteps right above me..." }
+        ]
+      },
+      {
+        id: "2",
+        title: "Letters Never Sent",
+        genre: "romance",
+        status: "Complete",
+        reads: "5,180",
+        description: "Two strangers exchange handwritten notes tucked inside old library books across ten years.",
+        parts: [
+          { title: "Part 1: Page 104", content: "I found your note inside the worn cover of 'Pride and Prejudice'. You asked if anyone still read paper books..." },
+          { title: "Part 2: Coffee & Ink", content: "Three years had passed since the first letter. Today, I left a flower between the pages..." }
+        ]
+      },
+      {
+        id: "3",
+        title: "Echoes of Orion",
+        genre: "scifi",
+        status: "Ongoing",
+        reads: "1,890",
+        description: "A lonely signal operator receiving unknown frequencies from deep space discovers a code meant specifically for him.",
+        parts: [
+          { title: "Part 1: Static Signals", content: "01001000 01000101 01001100 01001111...\n\nThe console flickered. The signal was coming from Sector 7." }
+        ]
+      }
+    ];
+
+    let currentStory = null;
+
+    /* ==================== LOGIC ==================== */
+    function enterSite() {
+      document.getElementById('welcome-screen').classList.add('hidden');
+      document.getElementById('main-content').classList.add('visible');
+      renderStories('all');
+    }
+
+    function switchGenre(genre) {
+      // Switch Theme styling on Body
+      document.body.className = `theme-${genre}`;
+
+      // Update Filter buttons active state
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      // Render filtered list
+      renderStories(genre);
+    }
+
+    function renderStories(genre) {
+      const container = document.getElementById('stories-container');
+      container.innerHTML = '';
+
+      const filtered = genre === 'all' 
+        ? storiesData 
+        : storiesData.filter(s => s.genre === genre);
+
+      filtered.forEach(story => {
+        const card = document.createElement('div');
+        card.className = 'story-card';
+        card.onclick = () => openStoryFile(story.id);
+
+        card.innerHTML = `
+          <div class="story-card-header">
+            <span class="genre-badge">${story.genre}</span>
+            <h3 class="story-card-title">${story.title}</h3>
+            <p class="story-card-desc">${story.description}</p>
+          </div>
+          <div class="story-card-footer">
+            <span>${story.status}</span>
+            <span>${story.parts.length} Parts</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openStoryFile(storyId) {
+      currentStory = storiesData.find(s => s.id === storyId);
+      if (!currentStory) return;
+
+      document.getElementById('modal-title').innerText = currentStory.title;
+      document.getElementById('modal-genre').innerText = currentStory.genre.toUpperCase();
+      document.getElementById('modal-status').innerText = currentStory.status;
+      document.getElementById('modal-parts-count').innerText = currentStory.parts.length;
+      document.getElementById('modal-reads').innerText = currentStory.reads;
+      document.getElementById('modal-description').innerText = currentStory.description;
+
+      const partsContainer = document.getElementById('parts-buttons-container');
+      partsContainer.innerHTML = '';
+
+      currentStory.parts.forEach((part, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'part-btn';
+        btn.innerText = part.title;
+        btn.onclick = () => readPart(idx);
+        partsContainer.appendChild(btn);
+      });
+
+      showPartsList();
+      document.getElementById('story-modal').classList.add('active');
+    }
+
+    function readPart(partIndex) {
+      const part = currentStory.parts[partIndex];
+      document.getElementById('reading-part-title').innerText = part.title;
+      document.getElementById('reading-part-body').innerText = part.content;
+
+      document.getElementById('parts-list-view').style.display = 'none';
+      document.getElementById('reading-view').classList.add('active');
+    }
+
+    function showPartsList() {
+      document.getElementById('parts-list-view').style.display = 'block';
+      document.getElementById('reading-view').classList.remove('active');
+    }
+
+    function closeModal() {
+      document.getElementById('story-modal').classList.remove('active');
+    }
+  </script>
+</body>
+</html>
