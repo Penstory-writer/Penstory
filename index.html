@@ -1,539 +1,186 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>pen story</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Google Fonts including Malayalam Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Gayathri:wght@400;700&family=Noto+Serif+Malayalam:wght@400;600;700&family=Playfair+Display:ital,wght@0,500;1,400&family=Space+Mono&display=swap" rel="stylesheet">
 
   <style>
-    /* ==================== BASE & VARIABLES ==================== */
     :root {
       --bg-color: #0f0f11;
       --text-color: #e0e0e0;
       --accent-color: #ffffff;
       --card-bg: rgba(255, 255, 255, 0.04);
       --card-border: rgba(255, 255, 255, 0.1);
-      --font-title: 'Gayathri', 'Playfair Display', serif;
+      --font-title: 'Playfair Display', 'Gayathri', serif;
       --font-body: 'Noto Serif Malayalam', serif;
       --transition: all 0.4s ease;
     }
 
-    /* GENRE THEMES */
-    body.theme-all {
-      --bg-color: #0f0f11;
-      --text-color: #e0e0e0;
-      --accent-color: #ffffff;
-      --card-bg: rgba(255, 255, 255, 0.04);
-      --card-border: rgba(255, 255, 255, 0.1);
-      --font-title: 'Gayathri', serif;
-    }
+    body.theme-all { --bg-color: #0f0f11; --text-color: #e0e0e0; --accent-color: #ffffff; --card-bg: rgba(255, 255, 255, 0.04); --card-border: rgba(255, 255, 255, 0.1); }
+    body.theme-horror { --bg-color: #080202; --text-color: #c4b8b8; --accent-color: #ff3333; --card-bg: rgba(40, 0, 0, 0.3); --card-border: rgba(255, 0, 0, 0.2); --font-title: 'Cinzel', serif; }
+    body.theme-romance { --bg-color: #1a0f14; --text-color: #ebdada; --accent-color: #ffb3c6; --card-bg: rgba(255, 179, 198, 0.05); --card-border: rgba(255, 179, 198, 0.2); }
+    body.theme-scifi { --bg-color: #050b14; --text-color: #d0e1f9; --accent-color: #00f0ff; --card-bg: rgba(0, 240, 255, 0.03); --card-border: rgba(0, 240, 255, 0.2); --font-title: 'Space Mono', monospace; }
 
-    body.theme-horror {
-      --bg-color: #080202;
-      --text-color: #c4b8b8;
-      --accent-color: #ff3333;
-      --card-bg: rgba(40, 0, 0, 0.3);
-      --card-border: rgba(255, 0, 0, 0.2);
-      --font-title: 'Cinzel', 'Gayathri', serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--font-body); line-height: 1.8; transition: var(--transition); overflow-x: hidden; }
 
-    body.theme-romance {
-      --bg-color: #1a0f14;
-      --text-color: #ebdada;
-      --accent-color: #ffb3c6;
-      --card-bg: rgba(255, 179, 198, 0.05);
-      --card-border: rgba(255, 179, 198, 0.2);
-      --font-title: 'Gayathri', serif;
-    }
+    #welcome-screen { position: fixed; inset: 0; background-color: #08080a; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; text-align: center; padding: 20px; transition: opacity 0.8s ease, visibility 0.8s; }
+    #welcome-screen.hidden { opacity: 0; visibility: hidden; }
+    .welcome-title { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 400; letter-spacing: 2px; margin-bottom: 10px; color: #fff; }
+    .welcome-subtitle { font-size: 1.05rem; color: #aaa; margin-bottom: 30px; font-family: sans-serif; }
+    .enter-btn { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 12px 32px; font-size: 0.95rem; cursor: pointer; border-radius: 30px; transition: var(--transition); font-family: sans-serif; }
+    .enter-btn:hover { background: #fff; color: #000; }
 
-    body.theme-scifi {
-      --bg-color: #050b14;
-      --text-color: #d0e1f9;
-      --accent-color: #00f0ff;
-      --card-bg: rgba(0, 240, 255, 0.03);
-      --card-border: rgba(0, 240, 255, 0.2);
-      --font-title: 'Space Mono', 'Gayathri', monospace;
-    }
+    #main-content { max-width: 1000px; margin: 0 auto; padding: 40px 20px; opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s; }
+    #main-content.visible { opacity: 1; transform: translateY(0); }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    header { text-align: center; margin-bottom: 60px; padding-top: 20px; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--accent-color); margin-bottom: 15px; }
+    .description { max-width: 650px; margin: 0 auto; font-size: 1.05rem; opacity: 0.85; font-family: sans-serif; }
 
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: var(--font-body);
-      line-height: 1.8;
-      transition: var(--transition);
-      overflow-x: hidden;
-    }
+    .genre-filter { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; font-family: sans-serif; }
+    .filter-btn { background: transparent; border: 1px solid var(--card-border); color: var(--text-color); padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: var(--transition); }
+    .filter-btn.active, .filter-btn:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
 
-    /* ==================== WELCOME SCREEN ==================== */
-    #welcome-screen {
-      position: fixed;
-      inset: 0;
-      background-color: #08080a;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      text-align: center;
-      padding: 20px;
-      transition: opacity 0.8s ease, visibility 0.8s;
-    }
+    .stories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-bottom: 80px; }
+    .story-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; justify-content: space-between; }
+    .story-card:hover { transform: translateY(-5px); border-color: var(--accent-color); }
+    .genre-badge { font-size: 0.8rem; text-transform: uppercase; color: var(--accent-color); margin-bottom: 8px; display: inline-block; font-family: sans-serif; letter-spacing: 1px; }
+    .story-card-title { font-family: 'Gayathri', var(--font-title); font-size: 1.4rem; color: var(--accent-color); margin-bottom: 8px; }
+    .story-card-desc { font-size: 0.95rem; opacity: 0.8; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .story-card-footer { margin-top: 20px; display: flex; justify-content: space-between; font-size: 0.85rem; opacity: 0.65; border-top: 1px solid var(--card-border); padding-top: 12px; font-family: sans-serif; }
 
-    #welcome-screen.hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: var(--transition); padding: 20px; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .story-file-modal { background: var(--bg-color); border: 1px solid var(--card-border); width: 100%; max-width: 700px; max-height: 85vh; border-radius: 12px; padding: 35px; overflow-y: auto; position: relative; }
+    .close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-color); font-size: 1.5rem; cursor: pointer; }
+    .file-details { border-bottom: 1px dashed var(--card-border); padding-bottom: 20px; margin-bottom: 25px; }
+    .file-title { font-family: 'Gayathri', var(--font-title); font-size: 2rem; color: var(--accent-color); margin-bottom: 10px; }
+    .file-meta { display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px; font-family: sans-serif; }
+    .file-meta span { background: var(--card-bg); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--card-border); }
+    .file-description { font-size: 1rem; line-height: 1.7; opacity: 0.9; }
 
-    .welcome-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 3.5rem;
-      font-weight: 400;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-      color: #fff;
-    }
+    .parts-list h4 { font-family: sans-serif; margin-bottom: 15px; color: var(--accent-color); }
+    .part-btn { display: block; width: 100%; text-align: left; padding: 12px 16px; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-color); border-radius: 6px; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; transition: var(--transition); }
+    .part-btn:hover { background: var(--card-border); border-color: var(--accent-color); }
 
-    .welcome-subtitle {
-      font-size: 1.05rem;
-      color: #aaa;
-      margin-bottom: 30px;
-      font-weight: 400;
-    }
+    .reading-content { display: none; margin-top: 20px; border-top: 1px solid var(--card-border); padding-top: 20px; }
+    .reading-content.active { display: block; }
+    .back-to-parts { background: none; border: none; color: var(--accent-color); cursor: pointer; margin-bottom: 15px; font-size: 0.9rem; font-family: sans-serif; }
 
-    .enter-btn {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.3);
-      color: #fff;
-      padding: 12px 32px;
-      font-size: 0.95rem;
-      letter-spacing: 1px;
-      cursor: pointer;
-      border-radius: 30px;
-      transition: var(--transition);
-    }
-
-    .enter-btn:hover {
-      background: #fff;
-      color: #000;
-      border-color: #fff;
-    }
-
-    /* ==================== MAIN CONTENT ==================== */
-    #main-content {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
-    }
-
-    #main-content.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 60px;
-      padding-top: 20px;
-    }
-
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
-      color: var(--accent-color);
-      margin-bottom: 15px;
-      transition: var(--transition);
-    }
-
-    .description {
-      max-width: 650px;
-      margin: 0 auto;
-      font-size: 1.05rem;
-      color: var(--text-color);
-      opacity: 0.85;
-      font-weight: 400;
-    }
-
-    /* GENRE FILTER TABS */
-    .genre-filter {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-
-    .filter-btn {
-      background: transparent;
-      border: 1px solid var(--card-border);
-      color: var(--text-color);
-      padding: 8px 18px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: var(--transition);
-    }
-
-    .filter-btn.active, .filter-btn:hover {
-      background: var(--accent-color);
-      color: #000;
-      border-color: var(--accent-color);
-    }
-
-    /* STORIES GRID */
-    .stories-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 25px;
-      margin-bottom: 80px;
-    }
-
-    .story-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 24px;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      backdrop-filter: blur(5px);
-    }
-
-    .story-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent-color);
-    }
-
-    .story-card-header {
-      margin-bottom: 15px;
-    }
-
-    .genre-badge {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--accent-color);
-      margin-bottom: 8px;
-      display: inline-block;
-    }
-
-    .story-card-title {
-      font-family: var(--font-title);
-      font-size: 1.4rem;
-      color: var(--accent-color);
-      margin-bottom: 8px;
-    }
-
-    .story-card-desc {
-      font-size: 0.95rem;
-      opacity: 0.8;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .story-card-footer {
-      margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      opacity: 0.65;
-      border-top: 1px solid var(--card-border);
-      padding-top: 12px;
-    }
-
-    /* ==================== STORY DETAIL MODAL (FILE VIEW) ==================== */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition);
-      padding: 20px;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .story-file-modal {
-      background: var(--bg-color);
-      border: 1px solid var(--card-border);
-      width: 100%;
-      max-width: 700px;
-      max-height: 85vh;
-      border-radius: 12px;
-      padding: 35px;
-      overflow-y: auto;
-      position: relative;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      color: var(--text-color);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    .file-details {
-      border-bottom: 1px dashed var(--card-border);
-      padding-bottom: 20px;
-      margin-bottom: 25px;
-    }
-
-    .file-title {
-      font-family: var(--font-title);
-      font-size: 2rem;
-      color: var(--accent-color);
-      margin-bottom: 10px;
-    }
-
-    .file-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      font-size: 0.85rem;
-      opacity: 0.8;
-      margin-bottom: 15px;
-    }
-
-    .file-meta span {
-      background: var(--card-bg);
-      padding: 4px 10px;
-      border-radius: 4px;
-      border: 1px solid var(--card-border);
-    }
-
-    .file-description {
-      font-size: 1rem;
-      line-height: 1.7;
-      opacity: 0.9;
-    }
-
-    /* PARTS SELECTOR */
-    .parts-list h4 {
-      font-family: var(--font-title);
-      margin-bottom: 15px;
-      color: var(--accent-color);
-    }
-
-    .part-btn {
-      display: block;
-      width: 100%;
-      text-align: left;
-      padding: 12px 16px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text-color);
-      border-radius: 6px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: var(--transition);
-    }
-
-    .part-btn:hover {
-      background: var(--card-border);
-      border-color: var(--accent-color);
-    }
-
-    /* READING VIEW CONTAINER */
-    .reading-content {
-      display: none;
-      margin-top: 20px;
-      border-top: 1px solid var(--card-border);
-      padding-top: 20px;
-    }
-
-    .reading-content.active {
-      display: block;
-    }
-
-    .back-to-parts {
-      background: none;
-      border: none;
-      color: var(--accent-color);
-      cursor: pointer;
-      margin-bottom: 15px;
-      font-size: 0.9rem;
-    }
-
-    /* ==================== AUTHOR SECTION ==================== */
-    footer {
-      border-top: 1px solid var(--card-border);
-      padding-top: 50px;
-      margin-top: 60px;
-      text-align: center;
-    }
-
-    .author-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 30px;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    .author-name {
-      font-family: var(--font-title);
-      font-size: 1.3rem;
-      color: var(--accent-color);
-      margin-bottom: 8px;
-    }
-
-    .author-bio {
-      font-size: 0.95rem;
-      opacity: 0.8;
-      margin-bottom: 15px;
-    }
+    footer { border-top: 1px solid var(--card-border); padding-top: 50px; margin-top: 60px; text-align: center; font-family: sans-serif; }
+    .author-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 30px; max-width: 500px; margin: 0 auto; }
+    .author-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--accent-color); margin-bottom: 8px; }
+    .author-bio { font-size: 0.95rem; opacity: 0.8; }
   </style>
 </head>
 <body class="theme-all">
 
-  <!-- 1. WELCOME SCREEN -->
+  <!-- WELCOME SCREEN (English) -->
   <div id="welcome-screen">
     <h1 class="welcome-title">pen story</h1>
-    <p class="welcome-subtitle">വാക്കുകളിലൂടെ രൂപപ്പെടുന്ന കഥകളുടെ ലോകം.</p>
-    <button class="enter-btn" onclick="enterSite()">പ്രവേശിക്കുക</button>
+    <p class="welcome-subtitle">A quiet space for stories, worlds, and emotions.</p>
+    <button class="enter-btn" onclick="enterSite()">Enter Site</button>
   </div>
 
-  <!-- 2. MAIN CONTENT -->
+  <!-- MAIN CONTENT -->
   <div id="main-content">
     <header>
       <h1 class="logo">pen story</h1>
-      <p class="description">
-        പെൻ സ്‌റ്റോറിയിലേക്ക് സ്വാഗതം. നിങ്ങളുടെ വായനാനുഭവം ആഴമുള്ളതാക്കാൻ ലളിതവും സുന്ദരവുമായ ഒരു ഇടം. കാറ്റഗറി തിരഞ്ഞെടുക്കൂ, കഥകൾ വായിക്കൂ.
-      </p>
+      <p class="description">Welcome to pen story. An immersive quiet space dedicated to storytelling across worlds, timelines, and emotions. Pick a genre, select a story, and read.</p>
     </header>
 
-    <!-- GENRE FILTERS -->
+    <!-- GENRE FILTERS (English) -->
     <div class="genre-filter">
-      <button class="filter-btn active" onclick="switchGenre('all')">എല്ലാ കഥകളും</button>
-      <button class="filter-btn" onclick="switchGenre('horror')">ഹൊറർ</button>
-      <button class="filter-btn" onclick="switchGenre('romance')">പ്രണയം</button>
-      <button class="filter-btn" onclick="switchGenre('scifi')">സയൻസ് ഫിക്ഷൻ</button>
+      <button class="filter-btn active" onclick="switchGenre('all')">All Stories</button>
+      <button class="filter-btn" onclick="switchGenre('horror')">Horror</button>
+      <button class="filter-btn" onclick="switchGenre('romance')">Romance</button>
+      <button class="filter-btn" onclick="switchGenre('scifi')">Sci-Fi</button>
     </div>
 
-    <!-- STORIES LIST -->
+    <!-- STORIES CONTAINER -->
     <div class="stories-grid" id="stories-container">
-      <!-- Story Cards populated dynamically by JS -->
+      <p style="text-align: center; grid-column: 1/-1; font-family: sans-serif;">Loading stories...</p>
     </div>
 
-    <!-- 3. AUTHOR SECTION -->
+    <!-- AUTHOR SECTION (English) -->
     <footer>
       <div class="author-card">
-        <h3 class="author-name">എഴുത്തുകാരനെ കുറിച്ച്</h3>
-        <p class="author-bio">
-          കഥകളും ഭാവനകളും വാക്കുകളാക്കി മാറ്റുന്ന ഒരു സാധാരണ എഴുത്തുകാരൻ.
-        </p>
+        <h3 class="author-name">About the Author</h3>
+        <p class="author-bio">Writer and creator of pen story. Creating worlds, dark corners, and heart-felt moments through written words.</p>
       </div>
     </footer>
   </div>
 
-  <!-- 4. STORY DETAILS & READER MODAL -->
+  <!-- READER MODAL (English Labels) -->
   <div class="modal-overlay" id="story-modal">
     <div class="story-file-modal">
       <button class="close-modal" onclick="closeModal()">&times;</button>
       
-      <!-- Meta Details Header -->
       <div class="file-details">
-        <h2 class="file-title" id="modal-title">കഥയുടെ പേര്</h2>
+        <h2 class="file-title" id="modal-title">Story Title</h2>
         <div class="file-meta">
-          <span>വിഭാഗം: <strong id="modal-genre">Horror</strong></span>
-          <span>അവസ്ഥ: <strong id="modal-status">തുടരുന്നു</strong></span>
-          <span>ഭാഗങ്ങൾ: <strong id="modal-parts-count">3</strong></span>
-          <span>വായനകൾ: <strong id="modal-reads">1.2k</strong></span>
+          <span>Genre: <strong id="modal-genre">Horror</strong></span>
+          <span>Status: <strong id="modal-status">Ongoing</strong></span>
+          <span>Parts: <strong id="modal-parts-count">0</strong></span>
         </div>
-        <p class="file-description" id="modal-description">കഥയുടെ വിവരണം ഇവിടെ കാണാം...</p>
+        <p class="file-description" id="modal-description">Story description...</p>
       </div>
 
-      <!-- Part List Selector -->
       <div class="parts-list" id="parts-list-view">
-        <h4>വായിക്കാൻ ഭാഗം തിരഞ്ഞെടുക്കൂ</h4>
+        <h4>Select a Chapter to Read</h4>
         <div id="parts-buttons-container"></div>
       </div>
 
-      <!-- Reader Text Area -->
       <div class="reading-content" id="reading-view">
-        <button class="back-to-parts" onclick="showPartsList()">&larr; ഭാഗങ്ങളുടെ ലിസ്റ്റിലേക്ക് മടങ്ങുക</button>
-        <h3 id="reading-part-title" style="margin-bottom: 15px; color: var(--accent-color);">ഭാഗം 1</h3>
-        <div id="reading-part-body" style="white-space: pre-line; opacity: 0.9;">കഥ ഇവിടെ വായിക്കാം...</div>
+        <button class="back-to-parts" onclick="showPartsList()">&larr; Back to Chapter List</button>
+        <h3 id="reading-part-title" style="margin-bottom: 15px; color: var(--accent-color);">Chapter</h3>
+        <div id="reading-part-body" style="white-space: pre-line; opacity: 0.9;"></div>
       </div>
     </div>
   </div>
 
   <script>
-    /* ==================== MALAYALAM SAMPLE DATA ==================== */
-    const storiesData = [
-      {
-        id: "1",
-        title: "ഇരുളിലെ വിളികൾ",
-        genre: "horror",
-        status: "തുടരുന്നു",
-        reads: "2,410",
-        description: "ഗ്രാമത്തിലെ ആ പഴയ ബംഗ്ലാവിൽ നിന്നും രാത്രിയിൽ കേൾക്കുന്ന ആ ശബ്ദം എന്തായിരുന്നു? ഉത്തരം തേടിയുള്ള യാത്ര.",
-        parts: [
-          { 
-            title: "ഭാഗം 1: പഴയ മതിൽക്കെട്ട്", 
-            content: "രാത്രി പന്ത്രണ്ട് മണിയോടടുത്തപ്പോൾ ഗ്രാമത്തിലെ തെരുവ് വിളക്കുകൾ അണഞ്ഞു...\n\nമഴ പെയ്യുന്ന ആ രാത്രിയിൽ ആരും ആ വഴി നടക്കാൻ ധൈര്യപ്പെട്ടില്ല. എന്നാൽ അവൻ ആ വലിയ ഇരുമ്പ് ഗേറ്റ് തള്ളിത്തുറന്നു." 
-          },
-          { 
-            title: "ഭാഗം 2: മുകളിലത്തെ മുറി", 
-            content: "മുകളിൽ നിന്നുള്ള കാലടൊച്ചകൾ കൂടുതൽ വ്യക്തമായി കേൾക്കാൻ തുടങ്ങി...\n\nഅവൻ പടികൾ ഓരോന്നായി കയറി ചെന്നു." 
-          }
-        ]
-      },
-      {
-        id: "2",
-        title: "ഓർമ്മപ്പൂക്കൾ",
-        genre: "romance",
-        status: "പൂർത്തിയായി",
-        reads: "5,180",
-        description: "വഴിയോരത്തെ പഴയ പുസ്തകശാലയിൽ വെച്ച് ആരംഭിച്ച അപൂർവ്വമായ ഒരു പ്രണയകഥ.",
-        parts: [
-          { 
-            title: "ഭാഗം 1: മഴയും പുസ്തകവും", 
-            content: "ആദ്യമായി കാണുമ്പോൾ മഴ കനത്തു പെയ്യുകയായിരുന്നു...\n\nകൈയ്യിലുണ്ടായിരുന്ന പുസ്തകം തുറന്നപ്പോൾ അതിൽ ഒരു ചെറിയ കുറിപ്പുണ്ടായിരുന്നു." 
-          }
-        ]
-      }
-    ];
+    const REPO_USER = "penstory-writer";
+    const REPO_NAME = "Penstory";
 
+    let storiesData = [];
     let currentStory = null;
 
-    /* ==================== LOGIC ==================== */
     function enterSite() {
       document.getElementById('welcome-screen').classList.add('hidden');
       document.getElementById('main-content').classList.add('visible');
-      renderStories('all');
+      loadStoriesFromGithub();
+    }
+
+    async function loadStoriesFromGithub() {
+      const container = document.getElementById('stories-container');
+      try {
+        const res = await fetch(`https://api.github.com/repos/${REPO_USER}/${REPO_NAME}/contents/stories`);
+        if (!res.ok) {
+          container.innerHTML = "<p style='text-align: center; grid-column: 1/-1; font-family: sans-serif;'>No stories published yet. Add JSON files inside the 'stories' folder.</p>";
+          return;
+        }
+        const files = await res.json();
+        storiesData = [];
+
+        for (let file of files) {
+          if (file.name.endsWith('.json')) {
+            const storyRes = await fetch(file.download_url);
+            const storyData = await storyRes.json();
+            storyData.id = file.name;
+            storiesData.push(storyData);
+          }
+        }
+        renderStories('all');
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = "<p style='text-align: center; grid-column: 1/-1; font-family: sans-serif;'>Failed to load stories.</p>";
+      }
     }
 
     function switchGenre(genre) {
@@ -548,9 +195,12 @@
       const container = document.getElementById('stories-container');
       container.innerHTML = '';
 
-      const filtered = genre === 'all' 
-        ? storiesData 
-        : storiesData.filter(s => s.genre === genre);
+      const filtered = genre === 'all' ? storiesData : storiesData.filter(s => s.genre === genre);
+
+      if(filtered.length === 0) {
+        container.innerHTML = "<p style='text-align: center; grid-column: 1/-1; font-family: sans-serif;'>No stories found in this genre.</p>";
+        return;
+      }
 
       filtered.forEach(story => {
         const card = document.createElement('div');
@@ -564,8 +214,8 @@
             <p class="story-card-desc">${story.description}</p>
           </div>
           <div class="story-card-footer">
-            <span>${story.status}</span>
-            <span>${story.parts.length} ഭാഗങ്ങൾ</span>
+            <span>${story.status || 'Ongoing'}</span>
+            <span>${story.parts ? story.parts.length : 0} Parts</span>
           </div>
         `;
         container.appendChild(card);
@@ -578,21 +228,22 @@
 
       document.getElementById('modal-title').innerText = currentStory.title;
       document.getElementById('modal-genre').innerText = currentStory.genre.toUpperCase();
-      document.getElementById('modal-status').innerText = currentStory.status;
-      document.getElementById('modal-parts-count').innerText = currentStory.parts.length;
-      document.getElementById('modal-reads').innerText = currentStory.reads;
+      document.getElementById('modal-status').innerText = currentStory.status || 'Ongoing';
+      document.getElementById('modal-parts-count').innerText = currentStory.parts ? currentStory.parts.length : 0;
       document.getElementById('modal-description').innerText = currentStory.description;
 
       const partsContainer = document.getElementById('parts-buttons-container');
       partsContainer.innerHTML = '';
 
-      currentStory.parts.forEach((part, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'part-btn';
-        btn.innerText = part.title;
-        btn.onclick = () => readPart(idx);
-        partsContainer.appendChild(btn);
-      });
+      if (currentStory.parts) {
+        currentStory.parts.forEach((part, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'part-btn';
+          btn.innerText = part.title;
+          btn.onclick = () => readPart(idx);
+          partsContainer.appendChild(btn);
+        });
+      }
 
       showPartsList();
       document.getElementById('story-modal').classList.add('active');
@@ -618,3 +269,4 @@
   </script>
 </body>
 </html>
+
