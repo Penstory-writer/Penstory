@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ml">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>pen story</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,500;1,400&family=Space+Mono&display=swap" rel="stylesheet">
+  <!-- Google Fonts including Malayalam Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Gayathri:wght@400;700&family=Noto+Serif+Malayalam:wght@400;600;700&family=Playfair+Display:ital,wght@0,500;1,400&family=Space+Mono&display=swap" rel="stylesheet">
 
   <style>
     /* ==================== BASE & VARIABLES ==================== */
@@ -16,8 +17,8 @@
       --accent-color: #ffffff;
       --card-bg: rgba(255, 255, 255, 0.04);
       --card-border: rgba(255, 255, 255, 0.1);
-      --font-title: 'Playfair Display', serif;
-      --font-body: 'Inter', sans-serif;
+      --font-title: 'Gayathri', 'Playfair Display', serif;
+      --font-body: 'Noto Serif Malayalam', serif;
       --transition: all 0.4s ease;
     }
 
@@ -28,7 +29,7 @@
       --accent-color: #ffffff;
       --card-bg: rgba(255, 255, 255, 0.04);
       --card-border: rgba(255, 255, 255, 0.1);
-      --font-title: 'Playfair Display', serif;
+      --font-title: 'Gayathri', serif;
     }
 
     body.theme-horror {
@@ -37,7 +38,7 @@
       --accent-color: #ff3333;
       --card-bg: rgba(40, 0, 0, 0.3);
       --card-border: rgba(255, 0, 0, 0.2);
-      --font-title: 'Cinzel', serif;
+      --font-title: 'Cinzel', 'Gayathri', serif;
     }
 
     body.theme-romance {
@@ -46,7 +47,7 @@
       --accent-color: #ffb3c6;
       --card-bg: rgba(255, 179, 198, 0.05);
       --card-border: rgba(255, 179, 198, 0.2);
-      --font-title: 'Playfair Display', serif;
+      --font-title: 'Gayathri', serif;
     }
 
     body.theme-scifi {
@@ -55,7 +56,7 @@
       --accent-color: #00f0ff;
       --card-bg: rgba(0, 240, 255, 0.03);
       --card-border: rgba(0, 240, 255, 0.2);
-      --font-title: 'Space Mono', monospace;
+      --font-title: 'Space Mono', 'Gayathri', monospace;
     }
 
     * {
@@ -68,7 +69,7 @@
       background-color: var(--bg-color);
       color: var(--text-color);
       font-family: var(--font-body);
-      line-height: 1.7;
+      line-height: 1.8;
       transition: var(--transition);
       overflow-x: hidden;
     }
@@ -103,10 +104,10 @@
     }
 
     .welcome-subtitle {
-      font-size: 1rem;
-      color: #888;
+      font-size: 1.05rem;
+      color: #aaa;
       margin-bottom: 30px;
-      font-weight: 300;
+      font-weight: 400;
     }
 
     .enter-btn {
@@ -114,9 +115,8 @@
       border: 1px solid rgba(255,255,255,0.3);
       color: #fff;
       padding: 12px 32px;
-      font-size: 0.9rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
       cursor: pointer;
       border-radius: 30px;
       transition: var(--transition);
@@ -150,7 +150,7 @@
     }
 
     .logo {
-      font-family: var(--font-title);
+      font-family: 'Playfair Display', serif;
       font-size: 2.8rem;
       color: var(--accent-color);
       margin-bottom: 15px;
@@ -163,7 +163,7 @@
       font-size: 1.05rem;
       color: var(--text-color);
       opacity: 0.85;
-      font-weight: 300;
+      font-weight: 400;
     }
 
     /* GENRE FILTER TABS */
@@ -182,7 +182,7 @@
       padding: 8px 18px;
       border-radius: 20px;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       transition: var(--transition);
     }
 
@@ -223,7 +223,7 @@
     }
 
     .genre-badge {
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--accent-color);
@@ -239,8 +239,8 @@
     }
 
     .story-card-desc {
-      font-size: 0.9rem;
-      opacity: 0.75;
+      font-size: 0.95rem;
+      opacity: 0.8;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
@@ -251,8 +251,8 @@
       margin-top: 20px;
       display: flex;
       justify-content: space-between;
-      font-size: 0.8rem;
-      opacity: 0.6;
+      font-size: 0.85rem;
+      opacity: 0.65;
       border-top: 1px solid var(--card-border);
       padding-top: 12px;
     }
@@ -332,8 +332,8 @@
     }
 
     .file-description {
-      font-size: 0.95rem;
-      line-height: 1.6;
+      font-size: 1rem;
+      line-height: 1.7;
       opacity: 0.9;
     }
 
@@ -355,6 +355,7 @@
       border-radius: 6px;
       margin-bottom: 10px;
       cursor: pointer;
+      font-size: 0.95rem;
       transition: var(--transition);
     }
 
@@ -381,7 +382,7 @@
       color: var(--accent-color);
       cursor: pointer;
       margin-bottom: 15px;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
 
     /* ==================== AUTHOR SECTION ==================== */
@@ -409,8 +410,8 @@
     }
 
     .author-bio {
-      font-size: 0.9rem;
-      opacity: 0.75;
+      font-size: 0.95rem;
+      opacity: 0.8;
       margin-bottom: 15px;
     }
   </style>
@@ -420,8 +421,8 @@
   <!-- 1. WELCOME SCREEN -->
   <div id="welcome-screen">
     <h1 class="welcome-title">pen story</h1>
-    <p class="welcome-subtitle">A collection of tales crafted word by word.</p>
-    <button class="enter-btn" onclick="enterSite()">Enter</button>
+    <p class="welcome-subtitle">വാക്കുകളിലൂടെ രൂപപ്പെടുന്ന കഥകളുടെ ലോകം.</p>
+    <button class="enter-btn" onclick="enterSite()">പ്രവേശിക്കുക</button>
   </div>
 
   <!-- 2. MAIN CONTENT -->
@@ -429,16 +430,16 @@
     <header>
       <h1 class="logo">pen story</h1>
       <p class="description">
-        Welcome to pen story. An immersive quiet space dedicated to storytelling across worlds, timelines, and emotions. Pick a theme, select a story, and read.
+        പെൻ സ്‌റ്റോറിയിലേക്ക് സ്വാഗതം. നിങ്ങളുടെ വായനാനുഭവം ആഴമുള്ളതാക്കാൻ ലളിതവും സുന്ദരവുമായ ഒരു ഇടം. കാറ്റഗറി തിരഞ്ഞെടുക്കൂ, കഥകൾ വായിക്കൂ.
       </p>
     </header>
 
     <!-- GENRE FILTERS -->
     <div class="genre-filter">
-      <button class="filter-btn active" onclick="switchGenre('all')">All Stories</button>
-      <button class="filter-btn" onclick="switchGenre('horror')">Horror</button>
-      <button class="filter-btn" onclick="switchGenre('romance')">Romance</button>
-      <button class="filter-btn" onclick="switchGenre('scifi')">Sci-Fi</button>
+      <button class="filter-btn active" onclick="switchGenre('all')">എല്ലാ കഥകളും</button>
+      <button class="filter-btn" onclick="switchGenre('horror')">ഹൊറർ</button>
+      <button class="filter-btn" onclick="switchGenre('romance')">പ്രണയം</button>
+      <button class="filter-btn" onclick="switchGenre('scifi')">സയൻസ് ഫിക്ഷൻ</button>
     </div>
 
     <!-- STORIES LIST -->
@@ -449,9 +450,9 @@
     <!-- 3. AUTHOR SECTION -->
     <footer>
       <div class="author-card">
-        <h3 class="author-name">About the Author</h3>
+        <h3 class="author-name">എഴുത്തുകാരനെ കുറിച്ച്</h3>
         <p class="author-bio">
-          Writer and creator of <em>pen story</em>. Creating worlds, dark corners, and heart-felt moments through written words.
+          കഥകളും ഭാവനകളും വാക്കുകളാക്കി മാറ്റുന്ന ഒരു സാധാരണ എഴുത്തുകാരൻ.
         </p>
       </div>
     </footer>
@@ -464,67 +465,64 @@
       
       <!-- Meta Details Header -->
       <div class="file-details">
-        <h2 class="file-title" id="modal-title">Story Title</h2>
+        <h2 class="file-title" id="modal-title">കഥയുടെ പേര്</h2>
         <div class="file-meta">
-          <span>Genre: <strong id="modal-genre">Horror</strong></span>
-          <span>Status: <strong id="modal-status">Ongoing</strong></span>
-          <span>Parts: <strong id="modal-parts-count">3</strong></span>
-          <span>Total Reads: <strong id="modal-reads">1.2k</strong></span>
+          <span>വിഭാഗം: <strong id="modal-genre">Horror</strong></span>
+          <span>അവസ്ഥ: <strong id="modal-status">തുടരുന്നു</strong></span>
+          <span>ഭാഗങ്ങൾ: <strong id="modal-parts-count">3</strong></span>
+          <span>വായനകൾ: <strong id="modal-reads">1.2k</strong></span>
         </div>
-        <p class="file-description" id="modal-description">Story description goes here...</p>
+        <p class="file-description" id="modal-description">കഥയുടെ വിവരണം ഇവിടെ കാണാം...</p>
       </div>
 
       <!-- Part List Selector -->
       <div class="parts-list" id="parts-list-view">
-        <h4>Select a Part to Read</h4>
+        <h4>വായിക്കാൻ ഭാഗം തിരഞ്ഞെടുക്കൂ</h4>
         <div id="parts-buttons-container"></div>
       </div>
 
       <!-- Reader Text Area -->
       <div class="reading-content" id="reading-view">
-        <button class="back-to-parts" onclick="showPartsList()">&larr; Back to Parts</button>
-        <h3 id="reading-part-title" style="margin-bottom: 15px; color: var(--accent-color);">Part Title</h3>
-        <div id="reading-part-body" style="white-space: pre-line; opacity: 0.9;">Story text...</div>
+        <button class="back-to-parts" onclick="showPartsList()">&larr; ഭാഗങ്ങളുടെ ലിസ്റ്റിലേക്ക് മടങ്ങുക</button>
+        <h3 id="reading-part-title" style="margin-bottom: 15px; color: var(--accent-color);">ഭാഗം 1</h3>
+        <div id="reading-part-body" style="white-space: pre-line; opacity: 0.9;">കഥ ഇവിടെ വായിക്കാം...</div>
       </div>
     </div>
   </div>
 
   <script>
-    /* ==================== SAMPLE DATA ==================== */
+    /* ==================== MALAYALAM SAMPLE DATA ==================== */
     const storiesData = [
       {
         id: "1",
-        title: "Whispers in the Dark",
+        title: "ഇരുളിലെ വിളികൾ",
         genre: "horror",
-        status: "Ongoing",
+        status: "തുടരുന്നു",
         reads: "2,410",
-        description: "An abandoned manor on the edge of town hides secrets that speak only when the lights go completely out.",
+        description: "ഗ്രാമത്തിലെ ആ പഴയ ബംഗ്ലാവിൽ നിന്നും രാത്രിയിൽ കേൾക്കുന്ന ആ ശബ്ദം എന്തായിരുന്നു? ഉത്തരം തേടിയുള്ള യാത്ര.",
         parts: [
-          { title: "Part 1: The Old Gate", content: "The heavy iron gate creaked open under the weight of the autumn fog...\n\nSilence enveloped the grounds as I took my first step forward." },
-          { title: "Part 2: Footsteps Overhead", content: "I thought I was alone in the hall. Then came the soft, deliberate rhythm of footsteps right above me..." }
+          { 
+            title: "ഭാഗം 1: പഴയ മതിൽക്കെട്ട്", 
+            content: "രാത്രി പന്ത്രണ്ട് മണിയോടടുത്തപ്പോൾ ഗ്രാമത്തിലെ തെരുവ് വിളക്കുകൾ അണഞ്ഞു...\n\nമഴ പെയ്യുന്ന ആ രാത്രിയിൽ ആരും ആ വഴി നടക്കാൻ ധൈര്യപ്പെട്ടില്ല. എന്നാൽ അവൻ ആ വലിയ ഇരുമ്പ് ഗേറ്റ് തള്ളിത്തുറന്നു." 
+          },
+          { 
+            title: "ഭാഗം 2: മുകളിലത്തെ മുറി", 
+            content: "മുകളിൽ നിന്നുള്ള കാലടൊച്ചകൾ കൂടുതൽ വ്യക്തമായി കേൾക്കാൻ തുടങ്ങി...\n\nഅവൻ പടികൾ ഓരോന്നായി കയറി ചെന്നു." 
+          }
         ]
       },
       {
         id: "2",
-        title: "Letters Never Sent",
+        title: "ഓർമ്മപ്പൂക്കൾ",
         genre: "romance",
-        status: "Complete",
+        status: "പൂർത്തിയായി",
         reads: "5,180",
-        description: "Two strangers exchange handwritten notes tucked inside old library books across ten years.",
+        description: "വഴിയോരത്തെ പഴയ പുസ്തകശാലയിൽ വെച്ച് ആരംഭിച്ച അപൂർവ്വമായ ഒരു പ്രണയകഥ.",
         parts: [
-          { title: "Part 1: Page 104", content: "I found your note inside the worn cover of 'Pride and Prejudice'. You asked if anyone still read paper books..." },
-          { title: "Part 2: Coffee & Ink", content: "Three years had passed since the first letter. Today, I left a flower between the pages..." }
-        ]
-      },
-      {
-        id: "3",
-        title: "Echoes of Orion",
-        genre: "scifi",
-        status: "Ongoing",
-        reads: "1,890",
-        description: "A lonely signal operator receiving unknown frequencies from deep space discovers a code meant specifically for him.",
-        parts: [
-          { title: "Part 1: Static Signals", content: "01001000 01000101 01001100 01001111...\n\nThe console flickered. The signal was coming from Sector 7." }
+          { 
+            title: "ഭാഗം 1: മഴയും പുസ്തകവും", 
+            content: "ആദ്യമായി കാണുമ്പോൾ മഴ കനത്തു പെയ്യുകയായിരുന്നു...\n\nകൈയ്യിലുണ്ടായിരുന്ന പുസ്തകം തുറന്നപ്പോൾ അതിൽ ഒരു ചെറിയ കുറിപ്പുണ്ടായിരുന്നു." 
+          }
         ]
       }
     ];
@@ -539,15 +537,10 @@
     }
 
     function switchGenre(genre) {
-      // Switch Theme styling on Body
       document.body.className = `theme-${genre}`;
-
-      // Update Filter buttons active state
       const buttons = document.querySelectorAll('.filter-btn');
       buttons.forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
-
-      // Render filtered list
       renderStories(genre);
     }
 
@@ -572,7 +565,7 @@
           </div>
           <div class="story-card-footer">
             <span>${story.status}</span>
-            <span>${story.parts.length} Parts</span>
+            <span>${story.parts.length} ഭാഗങ്ങൾ</span>
           </div>
         `;
         container.appendChild(card);
